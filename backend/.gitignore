@@ -30,9 +30,19 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
+.vscode/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database
+/postgres-data/
 
 # macOS
 .DS_Store
 
 # Logs
 *.log
+

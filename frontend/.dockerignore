@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.angular/
+.idea/
+*.iml
+.DS_Store
+.env
+*.log
+
