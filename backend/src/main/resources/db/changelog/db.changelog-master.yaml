@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: core/v1-init-core-banking.sql  # Thêm prefix "core/"
+      relativeToChangelogFile: true
