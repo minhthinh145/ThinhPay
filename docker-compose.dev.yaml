@@ -1,0 +1,99 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: thinhpay-postgres
+    environment:
+      POSTGRES_DB: thinhpay_db
+      POSTGRES_USER: thinhpay
+      POSTGRES_PASSWORD: thinhpay123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - thinhpay-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: thinhpay-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@thinhpay.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - thinhpay-network
+    restart: unless-stopped
+
+  # Spring Boot Backend (Development mode with hot reload)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    container_name: thinhpay-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: thinhpay_db
+      DB_USERNAME: thinhpay
+      DB_PASSWORD: thinhpay123
+      SPRING_DEVTOOLS_RESTART_ENABLED: 'true'
+    ports:
+      - "8080:8080"
+      - "35729:35729"  # LiveReload port
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/pom.xml:/app/pom.xml
+      - maven-cache:/root/.m2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - thinhpay-network
+    restart: unless-stopped
+
+  # Angular Frontend (Development mode with hot reload)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-dev
+    container_name: thinhpay-frontend
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/angular.json:/app/angular.json
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/tsconfig.app.json:/app/tsconfig.app.json
+      - ./frontend/package.json:/app/package.json
+      - /app/node_modules  # Prevent overwriting node_modules
+      - /app/.angular      # Prevent overwriting .angular cache
+    depends_on:
+      - backend
+    networks:
+      - thinhpay-network
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+    driver: local
+  maven-cache:
+    driver: local
+
+networks:
+  thinhpay-network:
+    driver: bridge
+

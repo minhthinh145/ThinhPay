@@ -1,0 +1,10 @@
+target/
+.mvn/
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+.env
+*.log
+
