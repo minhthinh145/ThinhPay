@@ -22,11 +22,11 @@ CREATE TABLE core_accounts (
                                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 3. Bảng Giao dịch (ĐÃ SỬA: Thêm account_id)
+-- 3. Bảng Giao dịch
 CREATE TABLE core_transactions (
                                    id UUID PRIMARY KEY,
-                                   account_id UUID NOT NULL REFERENCES core_accounts(id), -- QUAN TRỌNG: Khớp với @ManyToOne trong Java
-                                   request_id VARCHAR(100) NOT NULL, -- Bỏ unique ở đây để tạo index riêng
+                                   account_id UUID NOT NULL REFERENCES core_accounts(id),
+                                   request_id VARCHAR(100) NOT NULL,
                                    amount NUMERIC(19, 4) NOT NULL,
                                    type VARCHAR(20) NOT NULL,
                                    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
@@ -35,12 +35,12 @@ CREATE TABLE core_transactions (
                                    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- TẠO INDEX (Bắt buộc phải viết tay trong SQL)
+-- INDEX CHO TRANSACTION
 CREATE UNIQUE INDEX idx_trx_request_id ON core_transactions(request_id);
 CREATE INDEX idx_trx_account_id ON core_transactions(account_id);
 
 
--- 4. Sổ cái Bút toán kép
+-- 4. Sổ cái Bút toán kép (Ledger)
 CREATE TABLE core_ledger_entries (
                                      id UUID PRIMARY KEY,
                                      transaction_id UUID REFERENCES core_transactions(id),
@@ -50,6 +50,13 @@ CREATE TABLE core_ledger_entries (
                                      entry_type VARCHAR(10) NOT NULL,
                                      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- INDEX CHO LEDGER (BỔ SUNG MỚI)
+-- Giúp tìm nhanh các bút toán thuộc về 1 giao dịch (quan trọng để check Double Entry)
+CREATE INDEX idx_ledger_trx_id ON core_ledger_entries(transaction_id);
+-- Giúp tìm nhanh lịch sử biến động số dư của 1 tài khoản
+CREATE INDEX idx_ledger_account_id ON core_ledger_entries(account_id);
+
 
 -- 5. Seed data
 INSERT INTO core_currencies (code, symbol, decimal_places) VALUES ('VND', '₫', 0);
