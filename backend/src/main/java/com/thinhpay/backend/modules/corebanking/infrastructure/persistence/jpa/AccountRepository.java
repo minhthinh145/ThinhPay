@@ -13,10 +13,28 @@ import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
-    Optional<Account> findByUserId(UUID userId);
+    /**
+ * Finds the Account associated with the given user ID.
+ *
+ * @param userId the UUID of the user whose Account is being searched
+ * @return an Optional containing the Account for the given user ID, or empty if none exists
+ */
+Optional<Account> findByUserId(UUID userId);
 
-    boolean existsByUserId(UUID userId);
+    /**
+ * Checks whether an Account exists for the specified user ID.
+ *
+ * @param userId the UUID of the user to check for an associated Account
+ * @return `true` if an Account exists for the given `userId`, `false` otherwise
+ */
+boolean existsByUserId(UUID userId);
 
+    /**
+     * Retrieve the Account for the given userId while acquiring a pessimistic write lock.
+     *
+     * @param userId the UUID of the user whose Account to retrieve
+     * @return an Optional containing the Account associated with the given userId, or empty if none exists
+     */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT a FROM Account a WHERE a.userId = :userId")
     Optional<Account> findByUserIdWithLock(@Param("userId") UUID userId);

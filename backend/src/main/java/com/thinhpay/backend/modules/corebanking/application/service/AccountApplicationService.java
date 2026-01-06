@@ -29,6 +29,15 @@ public class AccountApplicationService implements DepositUseCase, WithdrawUseCas
     TransactionRepository transactionRepository;
     LedgerEntryRepository ledgerEntryRepository;
 
+    /**
+     * Processes a deposit request: validates idempotency, locks and credits the account,
+     * creates and completes a transaction, persists a ledger entry, and returns the updated account view.
+     *
+     * @param request the deposit request containing the userId, requestId (for idempotency), and amount to deposit
+     * @return the updated AccountResponse reflecting the account's new balance and state
+     * @throws IllegalStateException if a transaction with the same requestId already exists
+     * @throws com.thinhpay.backend.common.exception.ResourceNotFoundException if no account exists for the given userId
+     */
     @Override
     @Transactional
     public AccountResponse deposit(DepositRequest request) {
@@ -48,6 +57,17 @@ public class AccountApplicationService implements DepositUseCase, WithdrawUseCas
         return AccountResponse.from(account);
     }
 
+    /**
+     * Processes a withdrawal request: validates idempotency, locks the account, debits the amount,
+     * records a transaction and ledger entry, and returns the updated account state.
+     *
+     * @param request the withdrawal request containing userId, amount, and requestId for idempotency
+     * @return the updated AccountResponse reflecting the account after the withdrawal
+     * @throws IllegalStateException    if a transaction with the same requestId already exists
+     * @throws com.thinhpay.backend.modules.corebanking.domain.ResourceNotFoundException
+     *                                  if no account exists for the given userId
+     * @throws IllegalArgumentException if the account has insufficient balance for the withdrawal
+     */
     @Override
     @Transactional
     public AccountResponse withdraw(WithdrawRequest request) {
@@ -67,18 +87,40 @@ public class AccountApplicationService implements DepositUseCase, WithdrawUseCas
         return AccountResponse.from(account);
     }
 
-    // Idempotency Check
+    /**
+     * Validate that no transaction with the given request identifier already exists.
+     *
+     * @param requestId the client-provided unique request identifier used for idempotency
+     * @throws IllegalStateException if a transaction with the given requestId already exists
+     */
     private void validateIdempotency(String requestId) {
         if (transactionRepository.existsByRequestId(requestId)) {
             throw new IllegalStateException("Transaction with request ID " + requestId + " already exists.");
         }
     }
 
+    /**
+     * Retrieve the account for the given user ID and acquire a database lock on it.
+     *
+     * @param userId the UUID of the user whose account should be fetched
+     * @return the locked Account belonging to the specified user
+     * @throws ResourceNotFoundException if no account exists for the given userId
+     */
     private Account getAccountWithLock(java.util.UUID userId) {
         return accountRepository.findByUserIdWithLock(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "userId", userId));
     }
 
+    /**
+     * Finalizes a completed transaction by creating its ledger entry and persisting the transaction, account, and ledger entry.
+     *
+     * Marks the provided transaction as completed, builds a corresponding LedgerEntry reflecting the provided amount and the account's resulting balance, and saves the transaction, account, and ledger entry to their repositories.
+     *
+     * @param account     the account affected by the transaction
+     * @param transaction the transaction to finalize and persist
+     * @param amount      the monetary amount applied in the ledger entry
+     * @param type        the ledger entry type (e.g., CREDIT or DEBIT)
+     */
     private void saveFlow(Account account, Transaction transaction, java.math.BigDecimal amount, LedgerEntryType type) {
         transaction.markAsCompleted();
 

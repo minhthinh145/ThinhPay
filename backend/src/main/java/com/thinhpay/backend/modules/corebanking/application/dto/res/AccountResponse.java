@@ -19,7 +19,15 @@ public class AccountResponse {
     BigDecimal balance;
     String status;
 
-    // Factory method for creating AccountResponse
+    /**
+     * Create an AccountResponse representing the given Account.
+     *
+     * Maps the source account's id -> accountId, currency code -> currency, balance -> balance,
+     * and status name -> status.
+     *
+     * @param account the domain Account to convert
+     * @return an AccountResponse with `accountId`, `currency` (ISO code), `balance`, and `status` populated from the source account
+     */
     public static AccountResponse from(Account account) {
         return AccountResponse.builder()
                 .accountId(account.getId())

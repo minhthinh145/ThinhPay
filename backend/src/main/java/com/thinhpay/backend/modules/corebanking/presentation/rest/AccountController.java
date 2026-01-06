@@ -20,6 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
     DepositUseCase depositUseCase;
 
+    /**
+     * Perform a deposit for an account using the provided request data.
+     *
+     * @param depositRequest the deposit details (for example, account identifier and amount)
+     * @return an ApiResponse containing the updated AccountResponse and a success message
+     */
     @PostMapping("/deposit")
     public ApiResponse<AccountResponse> deposit(@RequestBody @Valid DepositRequest depositRequest) {
         AccountResponse accountResponse = depositUseCase.deposit(depositRequest);

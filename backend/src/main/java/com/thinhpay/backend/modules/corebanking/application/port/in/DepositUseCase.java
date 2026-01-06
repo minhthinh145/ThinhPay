@@ -4,5 +4,11 @@ import com.thinhpay.backend.modules.corebanking.application.dto.req.DepositReque
 import com.thinhpay.backend.modules.corebanking.application.dto.res.AccountResponse;
 
 public interface DepositUseCase {
-    AccountResponse deposit(DepositRequest depositRequest);
+    /**
+ * Performs a deposit operation using the provided deposit request.
+ *
+ * @param depositRequest the deposit details, including amount and target account information
+ * @return the account state after the deposit has been applied
+ */
+AccountResponse deposit(DepositRequest depositRequest);
 }

@@ -11,6 +11,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configure HTTP security to disable CSRF and allow all requests, and expose the resulting filter chain as a bean.
+     *
+     * @param http the HttpSecurity instance to configure
+     * @return the built SecurityFilterChain reflecting the configured security rules
+     * @throws Exception if an error occurs while configuring or building the filter chain
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
