@@ -2,3 +2,6 @@ databaseChangeLog:
   - include:
       file: core/v1-init-core-banking.sql  # Thêm prefix "core/"
       relativeToChangelogFile: true
+  - include:
+      file: core/v2-add-more-currencies.sql  # Thêm prefix "core/"
+      relativeToChangelogFile: true
