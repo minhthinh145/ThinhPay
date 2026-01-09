@@ -54,6 +54,7 @@ services:
       - "35729:35729"  # LiveReload port
     volumes:
       - ./backend/src:/app/src
+      - ./backend/target:/app/target # <--- Thêm dòng này (Map folder build)
       - ./backend/pom.xml:/app/pom.xml
       - maven-cache:/root/.m2
     depends_on:
@@ -86,6 +87,67 @@ services:
     networks:
       - thinhpay-network
     restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: thinhpay-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - thinhpay-network
+    healthcheck:
+      test: redis-cli ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Service để chạy test (chỉ dùng khi cần)
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    container_name: thinhpay-backend-test
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      DB_HOST: test-db
+      DB_PORT: 5432
+      DB_NAME: thinhpay_test
+      DB_USERNAME: test_user
+      DB_PASSWORD: test_password
+    command: mvn clean test
+    volumes:
+      - ./backend/src:/app/src:ro  # Read-only source
+      - ./backend/pom.xml:/app/pom.xml:ro  # Read-only pom
+      - maven-cache:/root/.m2
+      # KHÔNG map target - để isolated hoàn toàn
+    depends_on:
+      test-db:
+        condition: service_healthy
+    networks:
+      - thinhpay-network
+    profiles:
+      - test
+
+  # Test Database
+  test-db:
+    image: postgres:16-alpine
+    container_name: thinhpay-test-db
+    environment:
+      POSTGRES_DB: thinhpay_test
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+    ports:
+      - "5435:5432"
+    networks:
+      - thinhpay-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d thinhpay_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - test
 
 volumes:
   postgres-data:

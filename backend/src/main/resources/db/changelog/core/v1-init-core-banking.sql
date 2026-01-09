@@ -61,3 +61,4 @@ CREATE INDEX idx_ledger_account_id ON core_ledger_entries(account_id);
 -- 5. Seed data
 INSERT INTO core_currencies (code, symbol, decimal_places) VALUES ('VND', '₫', 0);
 INSERT INTO core_currencies (code, symbol, decimal_places) VALUES ('USD', '$', 2);
+INSERT INTO core_currencies (code, symbol, decimal_places) VALUES ('EUR', '€', 2);
