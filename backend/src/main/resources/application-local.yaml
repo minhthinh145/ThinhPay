@@ -23,5 +23,37 @@ spring:
       host: localhost
       port: 6379
 
+  # Email Configuration (SMTP Gmail)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:thinhpay-secret-key-change-this-in-production-minimum-512-bits-for-security}
+  access-token-validity: 900000    # 15 minutes (in milliseconds)
+  refresh-token-validity: 604800000 # 7 days (in milliseconds)
+
+# ThinhPay Application Configuration
+thinhpay:
+  app:
+    name: ThinhPay
+    frontend-url: http://localhost:4200
+  email:
+    from: ${MAIL_USERNAME}
+    from-name: ThinhPay Support
+
 server:
   port: 8080
