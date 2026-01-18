@@ -2,6 +2,57 @@
 
 Ứng dụng thanh toán với Spring Boot + Angular
 
+**Status**: 🚀 Phase 4 Complete - Monitoring Ready!  
+**Progress**: 40% Overall | IAM: 100% | Core Banking: 95%
+
+---
+
+## 🎯 Recent Updates (2026-01-18)
+
+### ✅ Phase 4 Complete - Monitoring & Health Checks
+- Spring Boot Actuator integrated
+- Health check endpoints working
+- Prometheus metrics exposed
+- Custom health indicators (DB, Redis)
+- Production monitoring ready
+
+### ✅ Phase 3 Complete - Rate Limiting
+- Bucket4j integration working
+- Endpoint-specific rate limits configured
+- HTTP 429 responses verified
+- 10 bugs fixed during implementation
+
+### 🔧 Current Features
+- ✅ User registration with OTP
+- ✅ JWT authentication & token rotation
+- ✅ Multi-currency accounts & transfers
+- ✅ Rate limiting on auth endpoints
+- ✅ Swagger UI documentation
+- ✅ Health checks & monitoring
+- ✅ Prometheus metrics
+- ✅ Double-entry ledger system
+
+---
+
+## 📊 Monitoring
+
+### Health Check:
+```bash
+curl http://localhost:8080/actuator/health
+```
+
+### Prometheus Metrics:
+```bash
+curl http://localhost:8080/actuator/prometheus
+```
+
+### Application Info:
+```bash
+curl http://localhost:8080/actuator/info
+```
+
+---
+
 ## Khởi động Project
 
 ### Development (Khuyên dùng cho dev - có hot reload)

@@ -42,13 +42,18 @@ services:
       dockerfile: Dockerfile-dev
     container_name: thinhpay-backend
     environment:
-      SPRING_PROFILES_ACTIVE: local
+      SPRING_PROFILES_ACTIVE: dev
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: thinhpay_db
       DB_USERNAME: thinhpay
       DB_PASSWORD: thinhpay123
       SPRING_DEVTOOLS_RESTART_ENABLED: 'true'
+      # Email Configuration (Thay bằng email thật của bạn)
+      MAIL_USERNAME: ${MAIL_USERNAME:-your-email@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-your-app-password}
+      # JWT Configuration
+      JWT_SECRET: ${JWT_SECRET:-thinhpay-dev-secret-key-minimum-512-bits}
     ports:
       - "8080:8080"
       - "35729:35729"  # LiveReload port
