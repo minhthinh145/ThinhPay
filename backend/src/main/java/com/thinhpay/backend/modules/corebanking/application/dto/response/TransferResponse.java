@@ -1,10 +1,9 @@
-package com.thinhpay.backend.modules.corebanking.application.dto.res;
+package com.thinhpay.backend.modules.corebanking.application.dto.response;
 
 import com.thinhpay.backend.modules.corebanking.domain.transaction.Transaction;
 import com.thinhpay.backend.modules.corebanking.domain.transaction.TransactionStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -53,7 +52,7 @@ public class TransferResponse {
         // Calculate exchange rate (handle same currency case)
         BigDecimal exchangeRate = creditAmount.divide(debitAmount, 6, RoundingMode.HALF_UP);
 
-        return com.thinhpay.backend.modules.corebanking.application.dto.res.TransferResponse.builder()
+        return com.thinhpay.backend.modules.corebanking.application.dto.response.TransferResponse.builder()
                 .senderTransactionId(senderTransaction.getId())
                 .receiverTransactionId(receiverTransaction.getId())
                 .requestId(senderTransaction.getRequestId())

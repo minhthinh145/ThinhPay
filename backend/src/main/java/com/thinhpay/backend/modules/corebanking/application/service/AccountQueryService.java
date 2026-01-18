@@ -1,11 +1,9 @@
 package com.thinhpay.backend.modules.corebanking.application.service;
 
-import com.thinhpay.backend.modules.corebanking.application.dto.res.AccountResponse;
-import com.thinhpay.backend.modules.corebanking.domain.account.Account;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.AccountResponse;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.AccountRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

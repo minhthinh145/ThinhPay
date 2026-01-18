@@ -1,8 +1,8 @@
 package com.thinhpay.backend.modules.corebanking.application.service;
 
-import com.thinhpay.backend.modules.corebanking.application.dto.req.DepositRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.req.WithdrawRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.res.AccountResponse;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.DepositRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.WithdrawRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.AccountResponse;
 import com.thinhpay.backend.modules.corebanking.application.port.in.DepositUseCase;
 import com.thinhpay.backend.modules.corebanking.application.port.in.WithdrawUseCase;
 import com.thinhpay.backend.modules.corebanking.domain.account.Account;
@@ -11,8 +11,9 @@ import com.thinhpay.backend.modules.corebanking.domain.ledger.LedgerEntryType;
 import com.thinhpay.backend.modules.corebanking.domain.transaction.Transaction;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.AccountRepository;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.LedgerEntryRepository;
+import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.LedgerEntryRepository;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.TransactionRepository;
-import com.thinhpay.backend.shared.domain.ResourceNotFoundException;
+import com.thinhpay.backend.shared.exception.ResourceNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

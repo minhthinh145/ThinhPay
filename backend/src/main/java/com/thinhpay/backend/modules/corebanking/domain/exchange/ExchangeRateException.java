@@ -1,6 +1,6 @@
 package com.thinhpay.backend.modules.corebanking.domain.exchange;
 
-import com.thinhpay.backend.shared.domain.DomainException;
+import com.thinhpay.backend.shared.exception.DomainException;
 
 public class ExchangeRateException extends DomainException {
 

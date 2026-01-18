@@ -1,17 +1,11 @@
 package com.thinhpay.backend.modules.corebanking.domain.currency;
 
 import com.thinhpay.backend.shared.domain.AggregateRoot;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
-
-
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "core_currencies")
@@ -19,25 +13,29 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@SuperBuilder
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString()
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Currency implements AggregateRoot {
+
     @Id
     @Size(max = 3)
     @EqualsAndHashCode.Include
     @Column(name = "code", nullable = false, length = 3, updatable = false)
-    private String code;
+    String code;
 
     @Size(max = 5)
     @NotNull
     @Column(name = "symbol", nullable = false, length = 5)
-    private String symbol;
+    String symbol;
 
     @NotNull
-    @ColumnDefault("0")
+    @Builder.Default
     @Column(name = "decimal_places")
-    private Integer decimalPlaces = 0;
+    Integer decimalPlaces = 0;
+
+    // ========== Factory Method ========== //
 
     public static Currency of(String code, String symbol, Integer decimalPlaces) {
         return Currency.builder()

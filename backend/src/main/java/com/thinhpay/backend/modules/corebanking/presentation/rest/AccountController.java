@@ -1,10 +1,10 @@
 package com.thinhpay.backend.modules.corebanking.presentation.rest;
 
-import com.thinhpay.backend.modules.corebanking.application.dto.req.DepositRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.req.TransferRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.req.WithdrawRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.res.AccountResponse;
-import com.thinhpay.backend.modules.corebanking.application.dto.res.TransferResponse;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.DepositRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.TransferRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.WithdrawRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.AccountResponse;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.TransferResponse;
 import com.thinhpay.backend.modules.corebanking.application.port.in.DepositUseCase;
 import com.thinhpay.backend.modules.corebanking.application.port.in.TransferUseCase;
 import com.thinhpay.backend.modules.corebanking.application.port.in.WithdrawUseCase;
