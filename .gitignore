@@ -43,3 +43,15 @@ out/
 
 
 .fake
+
+
+# Agent workflows (project-specific, keep in Git)
+.agent/
+
+# Temporary debug files (safe to ignore)
+tmp/
+
+# IDE and OS files
+.idea/
+*.iml
+.DS_Store

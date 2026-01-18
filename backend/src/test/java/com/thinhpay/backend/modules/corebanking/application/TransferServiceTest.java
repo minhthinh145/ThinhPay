@@ -1,8 +1,8 @@
 package com.thinhpay.backend.modules.corebanking.application;
 
 import com.thinhpay.backend.BaseIntegrationTest;
-import com.thinhpay.backend.modules.corebanking.application.dto.req.TransferRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.res.TransferResponse;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.TransferRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.TransferResponse;
 import com.thinhpay.backend.modules.corebanking.application.port.in.TransferUseCase;
 import com.thinhpay.backend.modules.corebanking.domain.account.Account;
 import com.thinhpay.backend.modules.corebanking.domain.transaction.TransactionStatus;

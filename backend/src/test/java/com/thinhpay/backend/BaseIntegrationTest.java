@@ -5,9 +5,12 @@ import com.thinhpay.backend.modules.corebanking.domain.account.AccountStatus;
 import com.thinhpay.backend.modules.corebanking.domain.currency.Currency;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.AccountRepository;
 import com.thinhpay.backend.modules.corebanking.infrastructure.persistence.jpa.CurrencyRepository;
+import com.thinhpay.backend.modules.iam.infrastructure.service.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -19,6 +22,13 @@ public abstract class BaseIntegrationTest {
 
     @Autowired protected AccountRepository accountRepository;
     @Autowired protected CurrencyRepository currencyRepository;
+
+    /**
+     * Mock IAM dependencies để isolate CoreBanking tests.
+     * CoreBanking tests không cần mail server thật.
+     */
+    @MockBean protected EmailService emailService;
+    @MockBean protected JavaMailSender javaMailSender;
 
     protected Currency vnd;
 
