@@ -1,7 +1,19 @@
 databaseChangeLog:
   - include:
-      file: core/v1-init-core-banking.sql  # Thêm prefix "core/"
+      file: core/v1-init-core-banking.sql # Thêm prefix "core/"
       relativeToChangelogFile: true
   - include:
-      file: core/v2-add-more-currencies.sql  # Thêm prefix "core/"
+      file: core/v2-add-more-currencies.sql # Thêm prefix "core/"
+      relativeToChangelogFile: true
+  - include:
+      file: iam/v1-init-iam-schema.sql
+      relativeToChangelogFile: true
+  - include:
+      file: iam/v2-add-otp-missing-columns.sql
+      relativeToChangelogFile: true
+  - include:
+      file: paymenthub/v1-init-payment-hub.sql
+      relativeToChangelogFile: true
+  - include:
+      file: paymenthub/v2-add-version-column.sql
       relativeToChangelogFile: true

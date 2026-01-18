@@ -1,15 +1,17 @@
 package com.thinhpay.backend.shared.presentation;
 
-import com.thinhpay.backend.shared.domain.DomainException;
-import com.thinhpay.backend.shared.domain.ResourceNotFoundException;
+import com.thinhpay.backend.shared.exception.DomainException;
+import com.thinhpay.backend.shared.exception.ResourceNotFoundException;
 // Bỏ import ErrorResponse cũ
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.stream.Collectors;
 
@@ -45,6 +47,15 @@ public class GlobalExceptionHandler {
         log.warn("Validation: {}", details);
         return ResponseEntity.badRequest().body(
                 ApiResponse.failure(400, "Validation Error", details)
+        );
+    }
+
+    // 3b. Unsupported Media Type -> 415
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUnsupportedMediaType(HttpMediaTypeNotSupportedException ex) {
+        log.warn("Unsupported Media Type: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(
+                ApiResponse.failure(415, "Unsupported Media Type", ex.getContentType() != null ? ex.getContentType().toString() : "unknown")
         );
     }
 

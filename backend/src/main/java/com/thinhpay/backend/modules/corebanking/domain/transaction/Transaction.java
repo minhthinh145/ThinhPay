@@ -6,60 +6,60 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Setter(AccessLevel.PROTECTED)
 @Entity
 @Table(name = "core_transactions", indexes = {
         @Index(name = "idx_trx_request_id", columnList = "request_id", unique = true),
         @Index(name = "idx_trx_account_id", columnList = "account_id")
 })
+@Getter
+@Setter(AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @ToString(callSuper = true)
-@AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at"))
-})
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Transaction extends BaseEntity {
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false, updatable = false)
     @ToString.Exclude
-    private Account account;
+    Account account;
 
     @Size(max = 100)
     @NotNull
     @Column(name = "request_id", nullable = false, length = 100, unique = true, updatable = false)
-    private String requestId;
+    String requestId;
 
     @NotNull
     @Column(name = "amount", nullable = false, precision = 19, scale = 4, updatable = false)
-    private BigDecimal amount;
+    BigDecimal amount;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, length = 20, updatable = false)
-    private TransactionType type;
+    TransactionType type;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Builder.Default
     @Column(name = "status", nullable = false, length = 20)
-    private TransactionStatus status = TransactionStatus.PENDING;
+    TransactionStatus status = TransactionStatus.PENDING;
 
     @Size(max = 2000)
     @Column(name = "metadata")
-    private String metadata;
+    String metadata;
 
     @Size(max = 1000)
     @Column(name = "description")
-    private String description;
+    String description;
 
-    // -- Factory Method -- //
+    // ========== Factory Methods ========== //
+
     public static Transaction createDeposit(Account account, String requestId, BigDecimal amount, String description) {
         validateInputs(account, requestId, amount);
         return Transaction.builder()
@@ -84,7 +84,8 @@ public class Transaction extends BaseEntity {
                 .build();
     }
 
-    //Domain Logic
+    // ========== Domain Methods ========== //
+
     public void markAsCompleted() {
         if (this.status != TransactionStatus.PENDING) {
             throw new IllegalStateException("Transaction is already finished.");
@@ -107,8 +108,11 @@ public class Transaction extends BaseEntity {
     }
 
     private static void validateInputs(Account account, String requestId, BigDecimal amount) {
-        if (account == null) throw new IllegalArgumentException("Account cannot be null");
-        if (requestId == null || requestId.isBlank()) throw new IllegalArgumentException("Request ID is required");
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) throw new IllegalArgumentException("Amount must be positive");
+        if (account == null)
+            throw new IllegalArgumentException("Account cannot be null");
+        if (requestId == null || requestId.isBlank())
+            throw new IllegalArgumentException("Request ID is required");
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalArgumentException("Amount must be positive");
     }
 }

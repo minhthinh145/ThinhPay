@@ -1,4 +1,4 @@
-package com.thinhpay.backend.modules.corebanking.application.dto.res;
+package com.thinhpay.backend.modules.corebanking.application.dto.response;
 
 import com.thinhpay.backend.modules.corebanking.domain.account.Account;
 import lombok.*;
@@ -10,8 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountResponse {
     UUID accountId;

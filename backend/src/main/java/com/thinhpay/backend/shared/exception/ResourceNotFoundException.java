@@ -1,9 +1,12 @@
-package com.thinhpay.backend.shared.domain;
+package com.thinhpay.backend.shared.exception;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * Exception khi không tìm thấy resource (User, Account, Transaction...).
+ */
 @Getter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ResourceNotFoundException extends RuntimeException {

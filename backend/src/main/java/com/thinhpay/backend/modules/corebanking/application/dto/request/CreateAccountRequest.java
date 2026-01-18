@@ -1,4 +1,4 @@
-package com.thinhpay.backend.modules.corebanking.application.dto.req;
+package com.thinhpay.backend.modules.corebanking.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

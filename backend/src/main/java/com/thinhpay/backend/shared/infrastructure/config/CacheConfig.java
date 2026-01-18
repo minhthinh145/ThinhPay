@@ -1,5 +1,6 @@
 package com.thinhpay.backend.shared.infrastructure.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -16,8 +17,13 @@ import java.time.Duration;
 @EnableCaching
 public class CacheConfig {
 
+    /**
+     * Redis cache manager - only created when spring.cache.type is not 'simple'
+     * For tests, use spring.cache.type=simple to use in-memory cache instead.
+     */
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    @ConditionalOnProperty(name = "spring.cache.type", havingValue = "redis", matchIfMissing = true)
+    public CacheManager redisCacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofHours(1))
                 .disableCachingNullValues()
