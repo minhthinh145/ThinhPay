@@ -1,12 +1,15 @@
-package com.thinhpay.backend.shared.domain;
+package com.thinhpay.backend.shared.exception;
 
 import lombok.Getter;
 
+/**
+ * Base exception cho tất cả domain exceptions.
+ * Chứa errorCode để frontend/client có thể handle specific errors.
+ */
 @Getter
 public abstract class DomainException extends RuntimeException {
     private final String errorCode;
 
-    // Đảo message lên trước cho đúng chuẩn Java Exception
     protected DomainException(String message, String errorCode) {
         super(message);
         this.errorCode = errorCode;
