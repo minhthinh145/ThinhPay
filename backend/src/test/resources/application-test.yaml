@@ -7,10 +7,49 @@ spring:
     hibernate:
       ddl-auto: create-drop # Tự tạo bảng khi test chạy và XÓA SẠCH khi test xong
     show-sql: false
+    # JPA auditing is enabled by default via JpaAuditingConfig
   liquibase:
     enabled: false
   cache:
     type: simple
+  # Disable Redis for tests
+  data:
+    redis:
+      repositories:
+        enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  # Email Mock Config for Testing
+  mail:
+    host: localhost
+    port: 3025
+    username: test@thinhpay.com
+    password: test
+
+# JWT Test Config
+jwt:
+  secret: test-secret-key-for-testing-minimum-512-bits-required-for-hs512-algorithm
+  access-token-validity: 900000    # 15 minutes
+  refresh-token-validity: 604800000 # 7 days
+
+# ThinhPay App Config for Testing
+thinhpay:
+  app:
+    name: ThinhPay Test
+    frontend-url: http://localhost:4200
+  email:
+    from: test@thinhpay.com
+    from-name: ThinhPay Test Support
 
 server:
-    port: 8080
+  port: 8080
+
+# Logging
+logging:
+  level:
+    com.thinhpay: INFO
+    org.springframework.security: WARN
+

@@ -1,8 +1,8 @@
 package com.thinhpay.backend.modules.corebanking.application;
 
 import com.thinhpay.backend.BaseIntegrationTest;
-import com.thinhpay.backend.modules.corebanking.application.dto.req.DepositRequest;
-import com.thinhpay.backend.modules.corebanking.application.dto.res.AccountResponse;
+import com.thinhpay.backend.modules.corebanking.application.dto.request.DepositRequest;
+import com.thinhpay.backend.modules.corebanking.application.dto.response.AccountResponse;
 import com.thinhpay.backend.modules.corebanking.application.port.in.DepositUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
